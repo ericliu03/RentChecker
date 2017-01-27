@@ -6,7 +6,7 @@ import logging.config
 from collector import Collector
 from config_reader import Config
 from data_saver import DataOperator
-from html_scanner import ScannerOlivian
+from html_scanner import ScannerOlivian, ScannerCirrus
 
 config = Config('./config/rent_checker.ini')
 
@@ -30,14 +30,20 @@ def setup_log():
     console_handler.setFormatter(log_formatter)
     root_logger.addHandler(console_handler)
 
+    return logging.getLogger(__name__)
+
 
 def main():
-    setup_log()
+    log = setup_log()
+    log.info('RentChecker initializing...')
+    interval = config.get_refresh_interval()
     collector_olivian = Collector(config.get_olivian_uri(), ScannerOlivian(), DataOperator('Olivian'))
+    collector_cirrus = Collector(config.get_cirrus_uri(), ScannerCirrus(), DataOperator('Cirrus'))
+    log.info('RentChecker initialized. Begin collecting...')
     while True:
-        interval = config.get_refresh_interval()
         collector_olivian.collect()
-        print('sleeping for {} seconds'.format(interval))
+        collector_cirrus.collect()
+        log.info('sleeping for {} seconds'.format(interval))
         time.sleep(interval)
 
 main()

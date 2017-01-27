@@ -14,13 +14,13 @@ class Collector(object):
         log.info('Collector for {!s} created'.format(scanner))
 
     def get_content(self):
-        print('Getting html for {}'.format(self.uri))
+        log.info('Getting html for {}'.format(self.uri))
         response = requests.Session().get(self.uri)
         return response.content
 
     def collect(self):
         """Fetch the html and get unit data"""
-        print('Begin Collecting Data at date', datetime.now())
+        log.info('Begin Collecting Data at date' + str(datetime.now()))
         content = self.get_content()
         price_dict = self.scanner.get_units(content)
         self.saver.save(price_dict)

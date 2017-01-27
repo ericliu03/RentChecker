@@ -2,6 +2,9 @@ import os
 from datetime import datetime
 import json
 
+import logging
+
+log = logging.getLogger(__name__)
 json.JSONEncoder.default = lambda self, obj: (obj.isoformat() if isinstance(obj, datetime) else None)
 
 
@@ -13,7 +16,7 @@ class DataOperator(object):
             os.makedirs(self.file_dir)
 
     def save(self, price_dict):
-        print('Saving updated file...')
+        log.info('Saving updated file...')
         current_time = datetime.now()
         file_path = '{}{}.json'.format(self.file_dir, current_time.date().isoformat())
         try:
