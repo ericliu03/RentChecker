@@ -3,10 +3,10 @@ import time
 import logging
 import logging.config
 
-from collector import Collector
-from config_reader import Config
-from data_saver import DataOperator
-from html_scanner import ScannerOlivian, ScannerCirrus, ScannerMetropolitanTower
+from rent_checker.collector import Collector
+from rent_checker.config_reader import Config
+from rent_checker.data_saver import DataOperator
+from rent_checker.html_scanner import ScannerOlivian, ScannerCirrus, ScannerMetropolitanTower
 
 config = Config('./config/rent_checker.ini')
 
@@ -49,4 +49,3 @@ def main():
         log.info('sleeping for {} seconds'.format(interval))
         time.sleep(interval)
 
-main()
